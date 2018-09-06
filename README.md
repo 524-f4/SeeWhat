@@ -1,6 +1,6 @@
 # SeeWhat
 
-## 接口规范：
+## 一、[接口](https://github.com/524-f4/SeeWhat/wiki)规范：
 
 - 一个接口由 *标题(title)*, *路径(url)*, *输入(input)*, *输出(outpput)* 构成。其中 *输入(input)*, *输出(outpput)* 由接口字段构成。
 
