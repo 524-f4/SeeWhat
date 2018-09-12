@@ -1,0 +1,15 @@
+{
+    "name": "klusfq/see-whate",
+    "type": "project",
+    "authors": [
+        {
+            "name": "klusfq",
+            "email": "fuquan.yoxi@qq.com"
+        }
+    ],
+    "require": {
+        "zendframework/zend-diactoros": "^1.8",
+        "league/route": "^4.0",
+        "illuminate/database": "^5.7"
+    }
+}
