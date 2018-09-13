@@ -33,9 +33,9 @@ class Start
 
         //----------------------------------------------------------
         // 配置路由
-        $router->get('/cinema/surround/{id:number}' , 'app\controller\CinemaController::getSurround');
-        $router->get('/movie/list', 'app\controller\MovieController::getList');
-        $router->get('/session/info', 'app\controller\SessionController::getInfo');
+        $router->get('/cinema/surround' , 'app\controller\CinemaController::surround');
+        $router->get('/movie/list', 'app\controller\MovieController::list');
+        $router->get('/session/detail', 'app\controller\SessionController::detail');
         $router->post('/order/create', 'app\controller\OrderController::create');
 
         //----------------------------------------------------------

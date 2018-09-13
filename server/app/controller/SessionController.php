@@ -9,7 +9,7 @@ use app\Common;
 
 class SessionController
 {
-    public function getInfo(ServerRequestInterface $req) : ResponseInterface
+    public function detail(ServerRequestInterface $req) : ResponseInterface
     {
         $params = $req->getQueryParams();
 

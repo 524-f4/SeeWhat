@@ -11,7 +11,9 @@ class OrderController
 {
     public function create(ServerRequestInterface $req) : ResponseInterface
     {
-        // $data = $req->getParsedBody();
+        $params = $req->getParsedBody();
+
+        $data = $this->buildOrder($params);
 
         $resp = array(
             'errno' => 200,
@@ -22,5 +24,10 @@ class OrderController
         );
 
         return Common::getResp($resp);
+    }
+
+    protected function buildOrder($params)
+    {
+        
     }
 }

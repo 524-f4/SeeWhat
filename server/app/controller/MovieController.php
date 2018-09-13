@@ -74,7 +74,7 @@ class MovieController
         254621,
         226540
     );
-    public function getList(ServerRequestInterface $req, Array $args) : ResponseInterface
+    public function list(ServerRequestInterface $req) : ResponseInterface
     {
         $params = $req->getQueryParams();
 
