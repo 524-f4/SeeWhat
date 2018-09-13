@@ -36,7 +36,13 @@ class Start
         $router->get('/cinema/surround' , 'app\controller\CinemaController::surround');
         $router->get('/movie/list', 'app\controller\MovieController::list');
         $router->get('/session/detail', 'app\controller\SessionController::detail');
+
+        $router->get('/order/detail', 'app\controller\OrderController::detail');
         $router->post('/order/create', 'app\controller\OrderController::create');
+
+        $router->get('/user/info', 'app\controller\UserController::info');
+        $router->post('/user/register', 'app\controller\UserController::register');
+        $router->post('/user/login', 'app\controller\UserController::login');
 
         //----------------------------------------------------------
         // 配置缓存

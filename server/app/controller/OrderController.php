@@ -30,4 +30,20 @@ class OrderController
     {
         
     }
+
+
+    public function detail(ServerRequestInterface $req) : ResponseInterface
+    {
+        $data = 'the order/detail api';
+
+        $resp = array(
+            'errno' => 200,
+            'errmsg' => '',
+            'data' => [
+                'this' => $data
+            ]
+        );
+
+        return Common::getResp($resp);
+    }
 }
