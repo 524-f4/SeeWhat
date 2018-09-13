@@ -45,11 +45,11 @@ class SessionController
 
         $seats = array();
         for($i = 0;$i < 32; $i++) {
-            $currentSta = in_array($i, $res) ? false : true;
+            $currentStat = in_array($i, $res) ? false : true;
 
             $seats[] = array(
                 'seatId' => $i,
-                'status' => $currentSta
+                'status' => $currentStat
             );
         }
 
