@@ -11,14 +11,15 @@ class MovieController
 {
     public function getSurround(ServerRequestInterface $req) : ResponseInterface
     {
-        $data = array(
+        $cinemas = file_get_contents('app/data/cinemas.json');
+        $data = json_decode($cinemas, true);
+        
+        $resp = array(
             'errno' => 200,
             'errmsg' => '',
-            'data' => [
-                'this' => 'the getCinemasSurround api'
-            ]
+            'data' => $data
         );
 
-        return Common::getResp($data);
+        return Common::getResp($resp);
     }
 }

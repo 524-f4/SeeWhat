@@ -11,7 +11,12 @@ class SessionController
 {
     public function getInfo(ServerRequestInterface $req) : ResponseInterface
     {
-        $data = array(
+        $sessions = [];
+
+        $movies = file_get_contents('app/data/movies.json');
+        $data = json_decode($movies, true);
+
+        $resp = array(
             'errno' => 200,
             'errmsg' => '',
             'data' => [
@@ -19,6 +24,6 @@ class SessionController
             ]
         );
 
-        return Common::getResp($data);
+        return Common::getResp($resp);
     }
 }
