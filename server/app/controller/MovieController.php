@@ -9,11 +9,14 @@ use app\Common;
 
 class MovieController
 {
-    public function getSurround(ServerRequestInterface $req) : ResponseInterface
+    public function getSurround(ServerRequestInterface $req, Array $args) : ResponseInterface
     {
-        $cinemas = file_get_contents('app/data/cinemas.json');
-        $data = json_decode($cinemas, true);
+        // $cinemas = file_get_contents('app/data/cinemas.json');
+        // $data = json_decode($cinemas, true);
+
+        $ret = new \ReflectionClass($req);
         
+        $data = $ret->getMethods();
         $resp = array(
             'errno' => 200,
             'errmsg' => '',

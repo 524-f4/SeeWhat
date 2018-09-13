@@ -11,19 +11,51 @@ class SessionController
 {
     public function getInfo(ServerRequestInterface $req) : ResponseInterface
     {
-        $sessions = [];
+        $params = $req->getQueryParams();
 
-        $movies = file_get_contents('app/data/movies.json');
-        $data = json_decode($movies, true);
+        // 检验参数
+        if (empty($params['cinemaId']) || empty($params['movieId']) || empty($params['sessionId'])) {
+            throw new \Exception();
+        }
+
+        // 处理参数
+        $key = $params['sessionId'] . ':' . $params['cinemaId'] . ':' . $params['movieId'];
+        
+        // 获取当场座位数
+        $info = $this->getSeats($key);
 
         $resp = array(
             'errno' => 200,
             'errmsg' => '',
             'data' => [
-                'this' => 'the getSessionInfo api'
+                'this' => $info
             ]
         );
 
         return Common::getResp($resp);
+    }
+
+    // 查询场次
+    protected function getSeats($key)
+    {
+        $votes = 32;
+
+        $res = Common::$redis->sMembers($key);
+        $votes = $votes - count($res);
+
+        $seats = array();
+        for($i = 0;$i < 32; $i++) {
+            $currentSta = in_array($i, $res) ? false : true;
+
+            $seats[] = array(
+                'seatId' => $i,
+                'status' => $currentSta
+            );
+        }
+
+        return array(
+            'votes' => $votes,
+            'seats' => $seats
+        );
     }
 }

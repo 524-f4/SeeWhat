@@ -33,8 +33,15 @@ class Start
 
         //----------------------------------------------------------
         // 配置路由
-        $router->get('/api/cinema/surround' , 'app\controller\MovieController::getSurround');
-        $router->get('/api/session/info', 'app\controller\SessonController::getInfo');
+        $router->get('/cinema/surround/{id:number}' , 'app\controller\MovieController::getSurround');
+        $router->get('/session/info', 'app\controller\SessionController::getInfo');
+        $router->post('/order/create', 'app\controller\OrderController::create');
+
+        //----------------------------------------------------------
+        // 配置缓存
+        Common::$redis = new \Redis();
+        Common::$redis->connect('127.0.0.1', 6379);
+        Common::$redis->auth('future');
 
         return $router;
     }

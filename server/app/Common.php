@@ -7,6 +7,8 @@ use Zend\Diactoros\Response\JsonResponse;
 
 class Common
 {
+    public static $redis;
+
     public static function getResp(Array $arr): ResponseInterface
     {
         return new JsonResponse($arr);
