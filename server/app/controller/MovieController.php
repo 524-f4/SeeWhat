@@ -101,10 +101,12 @@ class MovieController
         for($i = $boundaryId + 1; (!empty(self::$mids[$i]) && $i < $endIndex ); $i++) {
             $cur = (string)self::$mids[$i];
 
-            $keys = Common::$redis->hKeys($cur);
-            $vals = Common::$redis->hVals($cur);
+            // $keys = Common::$redis->hKeys($cur);
+            // $vals = Common::$redis->hVals($cur);
+            $res = Common::$redis->hGetAll($cur);
+            $res['movieId'] = self::$mids[$i];
 
-            $mvs[] = array_combine($keys, $vals);
+            $mvs[] = $res;
         }
         $lastId = $i;
 
