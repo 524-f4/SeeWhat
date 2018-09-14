@@ -1,5 +1,5 @@
 <?php
-[
+return [
     [
         "cinemaId" => 1001,
         "cinemaName" => "雨哥影院",

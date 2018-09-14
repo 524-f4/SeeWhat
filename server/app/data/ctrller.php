@@ -4,11 +4,11 @@ $redis = new \Redis();
 $redis->connect('127.0.0.1', 6379);
 $redis->auth('future');
 
-$movies = json_decode(file_get_contents(__DIR__ . "/cinemas.json"), true);
+$cinemas = require(__DIR__ . "/cinemas.php");// json_decode(file_get_contents(__DIR__ . "/cinemas.json"), true);
 
-file_put_contents(__DIR__ . "/cinemas.json", $movies);die('end');
+// file_put_contents(__DIR__ . "/cinemas.json", $movies);die('end');
 
-foreach ($movies as $v) {
+foreach ($cinemas as $v) {
     // $m = array(
     //     'movieName' => $v['tCn'],               //电影名
     //     'movieEnglishName' => $v['tEn'],        //电影英文名
@@ -20,5 +20,6 @@ foreach ($movies as $v) {
     //     'type' => $v['movieType'],              //电影的类型
     //     'time' => $v['cC'],                     //电影时长
     // );
-    echo $redis->hMset($v['id'], $m). "\n";
+    $v['sessions'] = strtotime(date('Y-m-d'));
+    echo $redis->hMset('c:' . $v['cinemaId'], $v). "\n";
 }

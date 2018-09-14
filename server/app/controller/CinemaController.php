@@ -9,32 +9,7 @@ use app\Common;
 
 class CinemaController
 {
-    private static $cis = [
-        [
-            "cinemaId" => 1001,
-            "cinemaName" => "雨哥影院",
-            "cinemaPlace" => "湖南科大南校俱乐部",
-            "sessions" => []
-        ],
-        [
-            "cinemaId" => 1002,
-            "cinemaName" => "小辉辉儿童影院",
-            "cinemaPlace" => "湖南科大附属小学",
-            "sessions" => []
-        ],
-        [
-            "cinemaId" => 1003,
-            "cinemaName" => "皮氏休闲观影俱乐部",
-            "cinemaPlace" => "湖南科大后街666号",
-            "sessions" => []
-        ],
-        [
-            "cinemaId" => 1004,
-            "cinemaName" => "522露天影院",
-            "cinemaPlace" => "湖南科大北校九教",
-            "sessions" => []
-        ]
-    ];
+    private static $cis = [1001, 1002, 1003, 1004];
     public function surround(ServerRequestInterface $req) : ResponseInterface
     {
         $params = $req->getQueryParams();
@@ -56,8 +31,68 @@ class CinemaController
 
     protected function search($movieId)
     {
-        $result = Common::$redis->hMembers($movieId);
+        $result = Common::$redis->hGetAll($movieId);
 
-        
+        $output = array();
+        foreach (self::$cis as $v) {
+            $cnm = Common::$redis->hGetAll('c:' . $v);
+            
+            
+            if (empty($cnm['sessions']) || ($cnm['sessions'] < strtotime(date('Y-m-d')))){
+                $cnm['sessions'] = $this->buildSession($movieId, $cnm['cinemaId'], $result['time']);
+            } else {
+                $cnm['sessions'] = $this->getSession($movieId, $cnm['cinemaId']);
+            }
+
+            $output[] = $cnm;
+        }
+
+        return $output;
+    }
+
+    protected function buildSession($movieId, $cinemaId, $ltime)
+    {
+        $startTime = strtotime(date('Y-m-d 08:00:00')) + rand(0, 30) * 60;
+        $votes = 32;
+        $price = rand(36, 54) + rand(0, 9) * 0.1;
+
+        $x = 5;
+        $output = array();
+        while ($x) {
+            $endTime = $startTime + $ltime * 60 * 60;
+            $sessionId = $startTime;
+
+            $cur = array(
+                'sessionId' => $sessionId,
+                'startTime' => date('Y-m-d H:i:s', $startTime),
+                'endTime' => date('Y-m-d H:i:s', $endTime),
+                'price' => $price,
+                'votes' => $votes
+            );
+
+            $key = $sessionId . ':' . $cinemaId . ':' . $movieId;
+            Common::$redis->hMset($key, $cur);
+            $output[] = $cur;
+
+            $startTime = $endTime + rand(0, 90) * 60;
+
+            $x--;
+        }
+
+        return $output;
+    }
+
+
+    protected function getSession($movieId, $cinemaId)
+    {
+        $partn = '*:' . $cinemaId . ':' . $movieId;
+        $cos = Common::$redis->keys($partn);
+
+        $output = array();
+        foreach ($cos as $value) {
+            $output[] = Common::$redis->hGetAll($value);
+        }
+
+        return $output;
     }
 }
