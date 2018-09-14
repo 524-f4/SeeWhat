@@ -32,6 +32,9 @@ class CinemaController
     protected function search($movieId)
     {
         $result = Common::$redis->hGetAll($movieId);
+        if (empty($result)) {
+            throw new \Exception();
+        }
 
         $output = array();
         foreach (self::$cis as $v) {
