@@ -37,10 +37,12 @@ class CinemaController
         foreach (self::$cis as $v) {
             $cnm = Common::$redis->hGetAll('c:' . $v);
             
-            
-            if (empty($cnm['sessions']) || ($cnm['sessions'] < strtotime(date('Y-m-d')))){
+            $isBuild = empty(Common::$redis->keys('*:' . $cnm['cinemaId'] . ':' . $movieId));
+            if (!$isBuild || ($cnm['sessions'] < strtotime(date('Y-m-d')))){
+                return 0;
                 $cnm['sessions'] = $this->buildSession($movieId, $cnm['cinemaId'], $result['time']);
             } else {
+                return 1;
                 $cnm['sessions'] = $this->getSession($movieId, $cnm['cinemaId']);
             }
 
